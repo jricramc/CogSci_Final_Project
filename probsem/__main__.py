@@ -11,7 +11,7 @@ class CLI(Object):
         self._parser = argparse.ArgumentParser()
         self._parser.add_argument("--prompt", required=True)
         self._parser.add_argument("--suite", required=True)
-        self._parser.add_argument("--model", default="code-davinci-002")
+        self._parser.add_argument("--model", default="gpt-3.5-turbo")
 
     def run_main(self) -> None:
         start = datetime.datetime.now()

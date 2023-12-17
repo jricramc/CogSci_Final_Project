@@ -31,7 +31,24 @@ class ProbSem(Object):
                 "correct": index,
             }
 
-    def _score(self, prompt: str, text: str, program: str) -> np.float64:
+    def _extract_options(self, sample: dict) -> typing.Tuple[str, str]:
+        """
+        Extracts the two options being compared from the sample.
+
+        Args:
+        sample (dict): A sample containing the 'programs' key with comparison queries.
+
+        Returns:
+        tuple: A tuple containing the two options being compared.
+        """
+        # Example implementation, needs to be adjusted based on the actual format of 'programs'
+        program = sample["programs"][0]  # Assuming the first program contains the options
+        # Parse the program to extract the options
+        # Example: "(condition (likely-to-win 'option1 'option2))"
+        options = program.split("'")[1:3]  # Adjust this based on the actual format
+        return tuple(options)
+
+    def _score(self, prompt: str, text: str, program: str, options) -> np.float64:
         full_text = "\n".join([prompt, text, program])
         return self._model.score(full_text, program)
 
@@ -58,11 +75,11 @@ class ProbSem(Object):
             assert len(set(sample["prompt"])) == 1
             assert len(set(sample["text"])) == 1
             assert len(set(sample["programs"])) == self._suite.n_programs
+            options = self._extract_options(sample) 
             sample["weights"] = []
-            for prompt, text, program in zip(
-                sample["prompt"], sample["text"], sample["programs"]
-            ):
-                sample["weights"].append(self._score(prompt, text, program))
+            for prompt, text, program in zip(sample["prompt"], sample["text"], sample["programs"]):
+                score = self._score(prompt, text, program, options)
+                sample["weights"].append(score)
             sample["weights"] = np.array(sample["weights"])
             sample["scores"] = normalize(sample["weights"])
             samples.append(sample)

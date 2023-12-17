@@ -6,6 +6,9 @@ import warnings
 
 import numpy as np
 import openai
+from openai import OpenAI
+
+client = OpenAI()
 import torch
 
 from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM
@@ -13,68 +16,149 @@ from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM
 from probsem.abstract import Object, IModel
 from probsem.utils import tokenize, detokenize
 
-openai.api_key_path = str(pathlib.Path.home() / ".openai_api_key")
-
+# TODO: The 'openai.api_key_path' option isn't read in the client API. You will need to pass it when you instantiate the client, e.g. 'OpenAI(api_key_path=str(pathlib.Path.home() / ".openai_api_key"))'
+# openai.api_key_path = str(pathlib.Path.home() / ".openai_api_key")
 
 class Model(Object):
     def __init__(self, model_id: str) -> None:
         super().__init__()
         self._id = model_id
-        self._model: IModel
-        openai_engines = [engine["id"] for engine in openai.Engine.list()["data"]]
-        if self._id in openai_engines:
-            self.info("Model ID found in OpenAI engines.")
-            setattr(self, "_model", OpenAIModel(self._id))
-        else:
-            self.info("Model ID not found in OpenAI engines. Checking HuggingFace.")
-            setattr(self, "_model", HuggingFaceModel(self._id))
+        # self._model: IModel
+        setattr(self, "_model", OpenAIModel(self._id))
+        
+        # # New way to list engines using the OpenAI API 1.0.0
+        # try:
+        #     # TODO: The resource 'Engine' has been deprecated
+        #     # openai_engines = openai.Engine.list()
+        #     engine_ids = [engine.id for engine in openai_engines.data]
+        #     if self._id in engine_ids:
+        #         self.info("Model ID found in OpenAI engines.")
+        #         setattr(self, "_model", OpenAIModel(self._id))
+        #     else:
+        #         self.info("Model ID not found in OpenAI engines. Checking HuggingFace.")
+        #         setattr(self, "_model", HuggingFaceModel(self._id))
+        # except Exception as e:
+        #     # Handle exceptions appropriately
+        #     self.warn(f"Error accessing OpenAI engines: {str(e)}")
 
-    def score(
-        self,
-        full_text: str,
-        eval_text: str,
-        normalize: bool = True,
-        temperature: float = 1.0,
-    ) -> np.float64:
-        logp, num_eval = self._model.score(full_text, eval_text)
-        if normalize:
-            logp /= np.sqrt(num_eval)
-        return logp / temperature
+    def score(self, full_text: str, eval_text: str) -> np.float64:
+        return self._model.score(full_text, eval_text)
 
+# class Model(Object):
+#     def __init__(self, model_id: str) -> None:
+#         super().__init__()
+#         self._id = model_id
+#         self._model: IModel
+#         openai_engines = [engine["id"] for engine in openai.Engine.list()["data"]]
+#         if self._id in openai_engines:
 
-class OpenAIModel(Object, IModel):
+#             self.info("Model ID found in OpenAI engines.")
+#             setattr(self, "_model", OpenAIModel(self._id))
+#         else:
+#             print("selfid",self._id )
+#             self.info("Model ID not found in OpenAI engines. Checking HuggingFace." )
+#             setattr(self, "_model", HuggingFaceModel(self._id))
+
+#     def score(
+#         self,
+#         full_text: str,
+#         eval_text: str,
+#         normalize: bool = True,
+#         temperature: float = 1.0,
+#     ) -> np.float64:
+#         logp, num_eval = self._model.score(full_text, eval_text)
+#         if normalize:
+#             logp /= np.sqrt(num_eval)
+#         return logp / temperature
+
+class OpenAIModel(Object):
     def __init__(self, model_id: str) -> None:
         super().__init__()
         self._id = model_id
         self.info(f"Selected OpenAI {self._id} model.")
+        self.client = openai.OpenAI()
+    # def _get_response(self, text: str, retry_after=10):
+    #     try:
+    #         print("text", text)
+    #         response = client.completions.create(model=self._id,
+    #         prompt=text,
+    #         max_tokens=0,  # Adjust max_tokens as needed
+    #         n=1,
+    #         logprobs=0,
+    #         echo=True)
+    #         return response
+    #     except openai.RateLimitError:  # Correctly reference the RateLimitError
+    #         self.warn(f"Rate limit exceeded. Retrying after {retry_after} seconds.")
+    #         time.sleep(retry_after)
+    #         return self._get_response(text, retry_after * 2)
+        
+    def score(self, full_text: str, eval_text: str) -> np.float64:
+        response = self._get_response(full_text)
+        return self._calculate_score_from_response(response, eval_text)
 
-    def _get_response(
-        self, text: str, retry_after=10
-    ) -> openai.openai_object.OpenAIObject:
+    def _calculate_score_from_response(self, response, eval_text):
+        # Logic to analyze the response and calculate a score
+        # This is a placeholder implementation and should be adapted based on your requirements
+        # For example, checking if the response text contains certain keywords or phrases
+        # that indicate a preference for one of the options.
+        
+        print('response choices message',response.choices.message)
+        response_text = response.choices[0]
+
+        # Example scoring logic
+        if eval_text in response_text:
+            return 1.0  # Maximum score if the response contains the evaluated text
+        else:
+            return 0.0  # Minimum score otherwise
+    def _get_response(self, text: str, retry_after=10):
+        print('text', text)
         try:
-            return openai.Completion.create(
-                engine=self._id,
-                prompt=text,
-                max_tokens=0,
-                logprobs=0,
-                echo=True,
+            completion = self.client.chat.completions.create(
+                model=self._id,
+                messages=[
+                    {"role": "system", "content": "You are a church code expert that can answer any question with church code, you can only return a number as answer to the problem. That number is the probability that you think the first choice is the answer"},
+                    {"role": "user", "content": text}
+                ]
             )
-        except openai.error.RateLimitError:
+            return completion
+        except openai.RateLimitError:
             self.warn(f"Rate limit exceeded. Retrying after {retry_after} seconds.")
             time.sleep(retry_after)
             return self._get_response(text, retry_after * 2)
 
-    def score(self, full_text: str, eval_text: str) -> typing.Tuple[np.float64, int]:
-        full_resp = self._get_response(full_text)
-        eval_resp = self._get_response(eval_text)
-        num_eval = eval_resp["usage"]["total_tokens"]
-        get_tokens = lambda resp: resp["choices"][0]["logprobs"]["tokens"]
-        assert get_tokens(full_resp)[-num_eval:] == get_tokens(eval_resp)
-        logp = np.sum(full_resp["choices"][0]["logprobs"]["token_logprobs"][-num_eval:])
-        return logp, num_eval
+# class OpenAIModel(Object, IModel):
+#     def __init__(self, model_id: str) -> None:
+#         super().__init__()
+#         self._id = model_id
+#         self.info(f"Selected OpenAI {self._id} model.")
+
+#     def _get_response(
+#         self, text: str, retry_after=10
+#     ) -> openai.openai_object.OpenAIObject:
+#         try:
+#             return openai.ChatCompletion.create(
+#                 engine=self._id,
+#                 prompt=text,
+#                 max_tokens=0,
+#                 logprobs=0,
+#                 echo=True,
+#             )
+#         except openai.error.RateLimitError:
+#             self.warn(f"Rate limit exceeded. Retrying after {retry_after} seconds.")
+#             time.sleep(retry_after)
+#             return self._get_response(text, retry_after * 2)
+
+#     def score(self, full_text: str, eval_text: str) -> typing.Tuple[np.float64, int]:
+#         full_resp = self._get_response(full_text)
+#         eval_resp = self._get_response(eval_text)
+#         num_eval = eval_resp["usage"]["total_tokens"]
+#         get_tokens = lambda resp: resp["choices"][0]["logprobs"]["tokens"]
+#         assert get_tokens(full_resp)[-num_eval:] == get_tokens(eval_resp)
+#         logp = np.sum(full_resp["choices"][0]["logprobs"]["token_logprobs"][-num_eval:])
+#         return logp, num_eval
 
 
-class HuggingFaceModel(Object, IModel):
+class HuggingFaceModel(Object):
     def __init__(self, model_id: str) -> None:
         super().__init__()
         self._id = model_id
