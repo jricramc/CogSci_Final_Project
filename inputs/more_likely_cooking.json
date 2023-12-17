@@ -1,0 +1,34 @@
+{
+    "premise": ";;",
+    "context": [
+        {
+            "text": ";; A skillful professional vs an inexperienced amateur in a fairly judged cooking competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A skillful professional who is having an off day vs the winner of a local amateur cooking competition in a fairly judged cooking competition.", 
+            "expected": -1
+        },
+
+        {
+            "text": ";; A mediocre semi-professional chef vs a gifted inexperienced amateur chef in a fairly judged cooking competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A mediocre semi-professional chef vs a talented novice in a fairly judged cooking competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A local novice cooking champion vs a skilled semi-professional chef in a fairly judged cooking competition.", 
+            "expected": -1
+        }
+    ],
+    "query": ";;",
+    "programs": [
+        "(condition (likely-to-win-cooking 'skillful-professional 'inexperienced-amateur))",
+        "(condition (likely-to-win-cooking 'skillful-professional-off-day 'local-amateur-winner))",
+        "(condition (likely-to-win-cooking 'mediocre-semi-professional 'gifted-inexperienced-amateur))",
+        "(condition (likely-to-win-cooking 'mediocre-semi-professional 'talented-novice))",
+        "(condition (likely-to-win-cooking 'local-novice-champion 'skilled-semi-professional))"
+    ]
+}

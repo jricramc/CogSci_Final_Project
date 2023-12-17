@@ -1,0 +1,35 @@
+;; This Church program models competitions between players with varying skill levels and attitudes.
+
+;; Define a function to model skill based on experience and talent.
+(define (skill-level player)
+  (cond
+    ((equal? player 'very-talented-novice) (gaussian 70 15))
+    ((equal? player 'mediocre-experienced) (gaussian 60 20))
+    ((equal? player 'professional) (gaussian 85 10))
+    ((equal? player 'determined-novice) (gaussian 65 15))
+    ((equal? player 'lazy-intermediate) (gaussian 50 20))
+    ((equal? player 'determined-intermediate) (gaussian 75 15))
+    ((equal? player 'lazy-novice) (gaussian 40 20))
+    (else (gaussian 50 20))
+  )
+)
+
+;; Define a function to model motivation impact on performance.
+(define (motivation-impact player)
+  (cond
+    ((or (equal? player 'determined-novice) (equal? player 'determined-intermediate)) (+ (gaussian 5 2)))
+    ((or (equal? player 'lazy-novice) (equal? player 'lazy-intermediate)) (- (gaussian 5 2)))
+    (else 0)
+  )
+)
+
+;; Determine the likely winner in a competition.
+(define (likely-to-win player-1 player-2)
+  (> (+ (skill-level player-1) (motivation-impact player-1))
+     (+ (skill-level player-2) (motivation-impact player-2)))
+)
+
+;; Now, let us translate some user-defined statements.
+;; Each statement begins with either `Condition` or `Query`.
+;; `Condition` statements provide facts about the scenario.
+;; `Query` statements are questions that evaluate quantities of interest.

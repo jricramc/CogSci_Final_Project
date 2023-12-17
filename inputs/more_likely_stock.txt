@@ -1,0 +1,35 @@
+;; This Church program models a trading competition between various groups.
+
+;; Define the analytical skills based on the group's background.
+(define (analytical-skills group)
+  (cond
+    ((equal? group 'mit-students) (gaussian 70 15))
+    ((equal? group 'mit-students-ml) (gaussian 80 10))
+    ((equal? group 'wall-street-institution) (gaussian 75 10))
+    ((equal? group 'wall-street-15th) (gaussian 65 15))
+    ((equal? group 'uchicago-doctoral-cohort) (gaussian 75 10))
+    ((equal? group 'major-bank-quant-department) (gaussian 70 15))
+    ((equal? group 'financial-institution) (gaussian 65 20))
+    ((equal? group 'established-firm-old-models) (gaussian 55 20))
+    (else (gaussian 50 20))
+  )
+)
+
+;; Define the resource access level for each group.
+(define (resources group)
+  (cond
+    ((or (equal? group 'financial-institution) (equal? group 'wall-street-institution) (equal? group 'wall-street-15th) (equal? group 'major-bank-quant-department)) (gaussian 80 10))
+    (else (gaussian 50 20))
+  )
+)
+
+;; Trading performance is a combination of analytical skills and resources.
+(define (trading-performance group) (+ (analytical-skills group) (resources group)))
+
+;; Determines the likely winner in a trading competition.
+(define (likely-to-win-trading group-1 group-2) (> (trading-performance group-1) (trading-performance group-2)))
+
+;; Now, let us translate some user-defined statements.
+;; Each statement begins with either `Condition` or `Query`.
+;; `Condition` statements provide facts about the scenario.
+;; `Query` statements are questions that evaluate quantities of interest.

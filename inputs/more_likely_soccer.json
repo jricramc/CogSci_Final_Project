@@ -1,0 +1,38 @@
+{
+    "premise": ";;",
+    "context": [
+        {
+            "text": ";; A team from Argentina (not the national team) vs a team from England (not the national team) in a soccer game.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A team from Argentina’s first division vs a team from England’s second division in a soccer game.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A team from Argentina’s 1st division with 10 matches undefeated vs a team from England’s 1st division with 3 losses in a row in a soccer game.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A team from Argentina full of English players vs a team from England full of Argentine players in a soccer game.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A team from Argentina who beat 3 teams from France vs a team from England that beat all teams in Mexico in a soccer game.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A team from Argentina who lost 10 games in a row but just signed the 2 best players in the world vs a team from England with 5 games undefeated in a soccer game.", 
+            "expected": -1
+        }
+    ],
+    "query": ";;",
+    "programs": [
+        "(condition (likely-to-win-soccer 'argentina-team 'england-team))",
+        "(condition (likely-to-win-soccer 'argentina-first-division 'england-second-division))",
+        "(condition (likely-to-win-soccer 'argentina-undefeated 'england-three-losses))",
+        "(condition (likely-to-win-soccer 'argentina-english-players 'england-argentine-players))",
+        "(condition (likely-to-win-soccer 'argentina-beat-france 'england-beat-mexico))",
+        "(condition (likely-to-win-soccer 'argentina-lost-ten-signed-best 'england-undefeated-five))"
+    ]
+}

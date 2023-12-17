@@ -1,0 +1,28 @@
+[
+    {
+        "type": "\u001b[1;3;35mrefactor\u001b[0m",
+        "module": "probsem.abstract",
+        "obj": "IModel",
+        "line": 39,
+        "column": 0,
+        "endLine": 39,
+        "endColumn": 12,
+        "path": "probsem/abstract.py",
+        "symbol": "\u001b[1;3;35mtoo-few-public-methods\u001b[0m",
+        "message": "\u001b[1;3;35mToo few public methods (1/2)\u001b[0m",
+        "message-id": "R0903"
+    },
+    {
+        "type": "\u001b[1mconvention\u001b[0m",
+        "module": "probsem.models",
+        "obj": "OpenAIModel.score.<lambda>",
+        "line": 71,
+        "column": 21,
+        "endLine": 71,
+        "endColumn": 74,
+        "path": "probsem/models.py",
+        "symbol": "\u001b[1munnecessary-lambda-assignment\u001b[0m",
+        "message": "\u001b[1mLambda expression assigned to a variable. Define a function using the \"def\" keyword instead.\u001b[0m",
+        "message-id": "C3001"
+    }
+]

@@ -1,0 +1,33 @@
+{
+    "premise": ";;",
+    "context": [
+        {
+            "text": ";; A group of MIT students vs a Financial institution in trading.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A Wall Street Financial institution vs a group of MIT students in the AI Club for better performance in 1 month.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A group of MIT students using state of the art ML models vs a long established financial firm using old outdated models for generating more returns.", 
+            "expected": -1
+        },
+        {
+            "text": ";; The 15th best Wall Street Financial institution vs a group of MIT students in the Trading Club for better performance in 1 month.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A doctoral cohort from the University of Chicago employing behavioral finance strategies vs a quantitative analysis department at a major bank for achieving a higher risk-adjusted return over a fiscal year.", 
+            "expected": -1
+        }
+    ],
+    "query": ";;",
+    "programs": [
+        "(condition (likely-to-be-better-at-trading 'mit-students 'financial-institution))",
+        "(condition (likely-to-perform-better-one-month 'wall-street-institution 'mit-ai-club))",
+        "(condition (likely-to-generate-more-returns 'mit-students-ml 'established-firm-old-models))",
+        "(condition (likely-to-perform-better-one-month 'wall-street-15th 'mit-trading-club))",
+        "(condition (likely-to-achieve-higher-risk-adjusted-return 'uchicago-doctoral-cohort 'major-bank-quant-department))"
+    ]
+}

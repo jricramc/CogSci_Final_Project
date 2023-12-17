@@ -1,0 +1,33 @@
+{
+    "premise": ";;",
+    "context": [
+        {
+            "text": ";; An Olympic gold medalist vs an inexperienced amateur in a table tennis competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; An Olympic gold medalist having an off day vs the champion of a local semi-professional table tennis tournament.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A naturally gifted beginner vs a mediocre professional player in a table tennis competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A consistent semi-professional player vs a talented newcomer in a table tennis competition.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A local amateur table tennis champion vs an experienced semi-professional player.", 
+            "expected": -1
+        }
+    ],
+    "query": ";;",
+    "programs": [
+        "(condition (likely-to-win-table-tennis 'olympic-gold-medalist 'inexperienced-amateur))",
+        "(condition (likely-to-win-table-tennis 'olympic-gold-medalist-off-day 'local-semi-pro-champion))",
+        "(condition (likely-to-win-table-tennis 'gifted-beginner 'mediocre-professional))",
+        "(condition (likely-to-win-table-tennis 'consistent-semi-pro 'talented-newcomer))",
+        "(condition (likely-to-win-table-tennis 'local-amateur-champion 'experienced-semi-pro))"
+    ]
+}

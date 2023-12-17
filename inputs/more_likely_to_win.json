@@ -1,0 +1,38 @@
+{
+    "premise": ";;",
+    "context": [
+        {
+            "text": ";; A very talented novice vs a mediocre player with several years of experience.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A professional vs a very talented novice.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A determined novice vs a lazy intermediate.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A determined intermediate vs a lazy novice.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A determined intermediate vs a determined novice.", 
+            "expected": -1
+        },
+        {
+            "text": ";; A lazy intermediate vs a lazy novice.", 
+            "expected": -1
+        }
+    ],
+    "query": ";;",
+    "programs": [
+        "(condition (likely-to-win 'very-talented-novice 'mediocre-experienced))",
+        "(condition (likely-to-win 'professional 'very-talented-novice))",
+        "(condition (likely-to-win 'determined-novice 'lazy-intermediate))",
+        "(condition (likely-to-win 'determined-intermediate 'lazy-novice))",
+        "(condition (likely-to-win 'determined-intermediate 'determined-novice))",
+        "(condition (likely-to-win 'lazy-intermediate 'lazy-novice))"
+    ]
+}

@@ -1,0 +1,31 @@
+;; This Church program models a table tennis competition between players of varying skills.
+
+;; Each player's skill level varies depending on their status.
+(define (skill-level player)
+  (cond 
+    ((equal? player 'olympic-gold-medalist) (gaussian 90 10))
+    ((equal? player 'olympic-gold-medalist-off-day) (gaussian 80 15))
+    ((equal? player 'local-semi-pro-champion) (gaussian 70 20))
+    ((equal? player 'gifted-beginner) (gaussian 60 20))
+    ((equal? player 'mediocre-professional) (gaussian 70 15))
+    ((equal? player 'consistent-semi-pro) (gaussian 65 20))
+    ((equal? player 'talented-newcomer) (gaussian 60 25))
+    ((equal? player 'local-amateur-champion) (gaussian 55 20))
+    ((equal? player 'experienced-semi-pro) (gaussian 70 20))
+  )
+)
+
+;; Each player's current form can impact their performance.
+(define (current-form player) (uniform 0.8 1.2))
+
+;; The performance of a player in a match is influenced by their skill level and current form.
+(define (performance player) (* (skill-level player) (current-form player)))
+
+;; The winner of the match is the one with higher performance.
+;; Returns true if player-1 won against player-2, else false.
+(define (won-in-table-tennis player-1 player-2) (> (performance player-1) (performance player-2)))
+
+;; Now, let us translate some user-defined statements.
+;; Each statement begins with either `Condition` or `Query`.
+;; `Condition` statements provide facts about the scenario.
+;; `Query` statements are questions that evaluate quantities of interest.

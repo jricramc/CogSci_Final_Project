@@ -1,0 +1,36 @@
+;; This Church program models soccer matches between various teams.
+
+;; Define the base strength of teams based on their league and recent performance.
+(define (team-strength team recent-performance)
+  (cond 
+    ((equal? team 'argentina-first-division) (gaussian 70 10))
+    ((equal? team 'england-first-division) (gaussian 75 10))
+    ((equal? team 'england-second-division) (gaussian 60 15))
+    ((equal? team 'argentina-team) (gaussian 65 15))
+    ((equal? team 'england-team) (gaussian 65 15))
+    ;; Adjusting strength based on recent performance
+    ((equal? recent-performance 'undefeated) (+ (gaussian 5 2)))
+    ((equal? recent-performance 'losing-streak) (- (gaussian 5 2)))
+    (else 0)
+  )
+)
+
+;; Define a function for team composition impact (e.g., swapping players).
+(define (composition-impact team-composition)
+  (cond
+    ((equal? team-composition 'argentina-english-players) (- (gaussian 5 2)))
+    ((equal? team-composition 'england-argentine-players) (- (gaussian 5 2)))
+    (else 0)
+  )
+)
+
+;; Determine the winner of the match.
+(define (won-soccer-match team-1 team-2 team-1-performance team-2-performance team-1-composition team-2-composition)
+  (> (+ (team-strength team-1 team-1-performance) (composition-impact team-1-composition))
+     (+ (team-strength team-2 team-2-performance) (composition-impact team-2-composition)))
+)
+
+;; Now, let us translate some user-defined statements.
+;; Each statement begins with either `Condition` or `Query`.
+;; `Condition` statements provide facts about the scenario.
+;; `Query` statements are questions that evaluate quantities of interest.
