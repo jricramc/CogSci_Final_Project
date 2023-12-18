@@ -1,6 +1,6 @@
-scenario,chef1,probability_chef1,chef2,probability_chef2
-1. Skillful Professional vs Inexperienced Amateur,Skillful Professional,0.9861206452409572,Inexperienced Amateur,0.013879354759042783
-2. Skillful Professional (off day) vs Local Amateur Winner,Skillful Professional (off day),0.0019029089204668774,Local Amateur Winner,0.9980970910795331
-3. Mediocre Semi-Professional vs Gifted Inexperienced Amateur,Mediocre Semi-Professional,0.7322179350628216,Gifted Inexperienced Amateur,0.2677820649371784
-4. Mediocre Semi-Professional vs Talented Novice,Mediocre Semi-Professional,0.4429947903207598,Talented Novice,0.5570052096792402
-5. Local Novice Champion vs Skilled Semi-Professional,Local Novice Champion,0.971275759016737,Skilled Semi-Professional,0.028724240983262983
+scenario,chef1,chef2,probability_chef1, probability_chef2
+1. Skillful Professional vs Inexperienced Amateur,Skillful Professional,Inexperienced Amateur,,0.9861206452409572, 0.013879354759042783
+2. Skillful Professional (off day) vs Local Amateur Winner,Skillful Professional (off day),Local Amateur Winner, 0.0019029089204668774, 0.9980970910795331
+3. Mediocre Semi-Professional vs Gifted Inexperienced Amateur,Mediocre Semi-Professional,Gifted Inexperienced Amateur,0.7322179350628216, 0.2677820649371784
+4. Mediocre Semi-Professional vs Talented Novice,Mediocre Semi-Professional,Talented Novice,0.4429947903207598 ,0.5570052096792402
+5. Local Novice Champion vs Skilled Semi-Professional,Local Novice Champion,Skilled Semi-Professional,0.971275759016737,0.028724240983262983
