@@ -1,0 +1,7 @@
+scenario,team1,team2,probability_team1,probability_team2
+1. Argentina Team vs England Team,Argentina Team,England Team,0.9386,0.06140000000000001
+2. Argentina First Division vs England Second Division,Argentina First Division,England Second Division,0.00655608065113833,0.9934439193488617
+3. Argentina 1st Division Undefeated vs England 1st Division Three Losses,Argentina 1st Division Undefeated,England 1st Division Three Losses,0.5,0.5
+4. Argentina Team with English Players vs England Team with Argentine Players,Argentina Team with English Players,England Team with Argentine Players,0.951,0.049000000000000044
+5. Argentina Team Beat France vs England Team Beat Mexico,Argentina Team Beat France,England Team Beat Mexico,0.7,0.30000000000000004
+6. Argentina Lost Ten Signed Best vs England Undefeated Five,Argentina Lost Ten Signed Best,England Undefeated Five,0.9,0.09999999999999998

@@ -1,0 +1,6 @@
+scenario,entity1,entity2,probability_entity1,probability_entity2
+1. MIT Students vs Financial Institution in Trading,MIT Students,Financial Institution,0.06999999999999995,0.93
+2. Wall Street Institution vs MIT Students AI Club,Wall Street Institution,MIT Students AI Club,0.95,0.050000000000000044
+3. MIT Students ML vs Established Firm Old Models,MIT Students ML,Established Firm Old Models,0.91,0.08999999999999997
+4. Wall Street 15th vs MIT Trading Club,Wall Street 15th,MIT Trading Club,0.94,0.06000000000000005
+5. UChicago Doctoral Cohort vs Major Bank Quant Department,UChicago Doctoral Cohort,Major Bank Quant Department,0.32999999999999996,0.67

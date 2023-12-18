@@ -101,22 +101,25 @@ class OpenAIModel(Object):
         # This is a placeholder implementation and should be adapted based on your requirements
         # For example, checking if the response text contains certain keywords or phrases
         # that indicate a preference for one of the options.
+        first_choice = response.choices[0]  # Access the first Choice object
+        message = first_choice.message      # Access the ChatCompletionMessage object
+        content = message.content 
+
+        print('content',content)
         
-        print('response choices message',response.choices.message)
-        response_text = response.choices[0]
 
         # Example scoring logic
-        if eval_text in response_text:
+        if eval_text in content:
             return 1.0  # Maximum score if the response contains the evaluated text
         else:
             return 0.0  # Minimum score otherwise
     def _get_response(self, text: str, retry_after=10):
-        print('text', text)
+        # print('text', text)
         try:
             completion = self.client.chat.completions.create(
                 model=self._id,
                 messages=[
-                    {"role": "system", "content": "You are a church code expert that can answer any question with church code, you can only return a number as answer to the problem. That number is the probability that you think the first choice is the answer"},
+                    {"role": "system", "content": "You are an expert in Webppl code and an assistant to a probability lab: based on the given code, give me who you think will win in each scenario, and the probability that you think that person will win with (how confident you are). Only output the asnwer to the question in the format [winner, probability of winning] do not output anything else "},
                     {"role": "user", "content": text}
                 ]
             )

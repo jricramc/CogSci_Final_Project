@@ -1,0 +1,51 @@
+// Define a function to model skill based on experience and talent
+var skillLevel = function(player) {
+    switch(player) {
+        case 'veryTalentedNovice':
+            return gaussian(70, 15);
+        case 'mediocreExperienced':
+            return gaussian(60, 20);
+        case 'professional':
+            return gaussian(85, 10);
+        case 'determinedNovice':
+            return gaussian(65, 15);
+        case 'lazyIntermediate':
+            return gaussian(50, 20);
+        case 'determinedIntermediate':
+            return gaussian(75, 15);
+        case 'lazyNovice':
+            return gaussian(40, 20);
+        default:
+            return gaussian(50, 20);
+    }
+};
+
+// Define a function to model motivation impact on performance
+var motivationImpact = function(player) {
+    switch(player) {
+        case 'determinedNovice':
+        case 'determinedIntermediate':
+            return gaussian(5, 2);
+        case 'lazyNovice':
+        case 'lazyIntermediate':
+            return -gaussian(5, 2);
+        default:
+            return 0;
+    }
+};
+
+// Determine the likely winner in a competition
+var likelyToWin = function(player1, player2) {
+    return (skillLevel(player1) + motivationImpact(player1)) >
+           (skillLevel(player2) + motivationImpact(player2));
+};
+
+// Example scenarios from the user-defined statements
+var scenarios = [
+    {player1: 'veryTalentedNovice', player2: 'mediocreExperienced'},
+    {player1: 'professional', player2: 'veryTalentedNovice'},
+    {player1: 'determinedNovice', player2: 'lazyIntermediate'},
+    {player1: 'determinedIntermediate', player2: 'lazyNovice'},
+    {player1: 'determinedIntermediate', player2: 'determinedNovice'},
+    {player1: 'lazyIntermediate', player2: 'lazyNovice'}
+];

@@ -1,36 +1,50 @@
-;; This Church program models soccer matches between various teams.
+// Define the base strength of teams based on their league and recent performance
+var teamStrength = function(team, recentPerformance) {
+    switch(team) {
+        case 'argentinaFirstDivision':
+            return gaussian(70, 10);
+        case 'englandFirstDivision':
+            return gaussian(75, 10);
+        case 'englandSecondDivision':
+            return gaussian(60, 15);
+        case 'argentinaTeam':
+            return gaussian(65, 15);
+        case 'englandTeam':
+            return gaussian(65, 15);
+        // Adjusting strength based on recent performance
+        case 'undefeated':
+            return gaussian(5, 2);
+        case 'losingStreak':
+            return -gaussian(5, 2);
+        default:
+            return 0;
+    }
+};
 
-;; Define the base strength of teams based on their league and recent performance.
-(define (team-strength team recent-performance)
-  (cond 
-    ((equal? team 'argentina-first-division) (gaussian 70 10))
-    ((equal? team 'england-first-division) (gaussian 75 10))
-    ((equal? team 'england-second-division) (gaussian 60 15))
-    ((equal? team 'argentina-team) (gaussian 65 15))
-    ((equal? team 'england-team) (gaussian 65 15))
-    ;; Adjusting strength based on recent performance
-    ((equal? recent-performance 'undefeated) (+ (gaussian 5 2)))
-    ((equal? recent-performance 'losing-streak) (- (gaussian 5 2)))
-    (else 0)
-  )
-)
+// Define a function for team composition impact (e.g., swapping players)
+var compositionImpact = function(teamComposition) {
+    switch(teamComposition) {
+        case 'argentinaEnglishPlayers':
+            return -gaussian(5, 2);
+        case 'englandArgentinePlayers':
+            return -gaussian(5, 2);
+        default:
+            return 0;
+    }
+};
 
-;; Define a function for team composition impact (e.g., swapping players).
-(define (composition-impact team-composition)
-  (cond
-    ((equal? team-composition 'argentina-english-players) (- (gaussian 5 2)))
-    ((equal? team-composition 'england-argentine-players) (- (gaussian 5 2)))
-    (else 0)
-  )
-)
+// Determine the winner of the match
+var wonSoccerMatch = function(team1, team2, team1Performance, team2Performance, team1Composition, team2Composition) {
+    return (teamStrength(team1, team1Performance) + compositionImpact(team1Composition) >
+            teamStrength(team2, team2Performance) + compositionImpact(team2Composition));
+};
 
-;; Determine the winner of the match.
-(define (won-soccer-match team-1 team-2 team-1-performance team-2-performance team-1-composition team-2-composition)
-  (> (+ (team-strength team-1 team-1-performance) (composition-impact team-1-composition))
-     (+ (team-strength team-2 team-2-performance) (composition-impact team-2-composition)))
-)
-
-;; Now, let us translate some user-defined statements.
-;; Each statement begins with either `Condition` or `Query`.
-;; `Condition` statements provide facts about the scenario.
-;; `Query` statements are questions that evaluate quantities of interest.
+// Scenarios based on the provided JSON
+var scenarios = [
+    {team1: 'argentinaTeam', team2: 'englandTeam', team1Performance: 'normal', team2Performance: 'normal', team1Composition: 'normal', team2Composition: 'normal'},
+    {team1: 'argentinaFirstDivision', team2: 'englandSecondDivision', team1Performance: 'normal', team2Performance: 'normal', team1Composition: 'normal', team2Composition: 'normal'},
+    {team1: 'argentinaFirstDivision', team2: 'englandFirstDivision', team1Performance: 'undefeated', team2Performance: 'losingStreak', team1Composition: 'normal', team2Composition: 'normal'},
+    {team1: 'argentinaTeam', team2: 'englandTeam', team1Performance: 'normal', team2Performance: 'normal', team1Composition: 'argentinaEnglishPlayers', team2Composition: 'englandArgentinePlayers'},
+    {team1: 'argentinaTeam', team2: 'englandTeam', team1Performance: 'beatFrance', team2Performance: 'beatMexico', team1Composition: 'normal', team2Composition: 'normal'},
+    {team1: 'argentinaTeam', team2: 'englandTeam', team1Performance: 'lostTenSignedBest', team2Performance: 'undefeatedFive', team1Composition: 'normal', team2Composition: 'normal'}
+];

@@ -1,35 +1,55 @@
-;; This Church program models a trading competition between various groups.
+// Define the analytical skills based on the group's background
+var analyticalSkills = function(group) {
+    switch(group) {
+        case 'mitStudents':
+            return gaussian(70, 15);
+        case 'mitStudentsMl':
+            return gaussian(80, 10);
+        case 'wallStreetInstitution':
+            return gaussian(75, 10);
+        case 'wallStreet15th':
+            return gaussian(65, 15);
+        case 'uchicagoDoctoralCohort':
+            return gaussian(75, 10);
+        case 'majorBankQuantDepartment':
+            return gaussian(70, 15);
+        case 'financialInstitution':
+            return gaussian(65, 20);
+        case 'establishedFirmOldModels':
+            return gaussian(55, 20);
+        default:
+            return gaussian(50, 20);
+    }
+};
 
-;; Define the analytical skills based on the group's background.
-(define (analytical-skills group)
-  (cond
-    ((equal? group 'mit-students) (gaussian 70 15))
-    ((equal? group 'mit-students-ml) (gaussian 80 10))
-    ((equal? group 'wall-street-institution) (gaussian 75 10))
-    ((equal? group 'wall-street-15th) (gaussian 65 15))
-    ((equal? group 'uchicago-doctoral-cohort) (gaussian 75 10))
-    ((equal? group 'major-bank-quant-department) (gaussian 70 15))
-    ((equal? group 'financial-institution) (gaussian 65 20))
-    ((equal? group 'established-firm-old-models) (gaussian 55 20))
-    (else (gaussian 50 20))
-  )
-)
+// Define the resource access level for each group
+var resources = function(group) {
+    switch(group) {
+        case 'financialInstitution':
+        case 'wallStreetInstitution':
+        case 'wallStreet15th':
+        case 'majorBankQuantDepartment':
+            return gaussian(80, 10);
+        default:
+            return gaussian(50, 20);
+    }
+};
 
-;; Define the resource access level for each group.
-(define (resources group)
-  (cond
-    ((or (equal? group 'financial-institution) (equal? group 'wall-street-institution) (equal? group 'wall-street-15th) (equal? group 'major-bank-quant-department)) (gaussian 80 10))
-    (else (gaussian 50 20))
-  )
-)
+// Trading performance is a combination of analytical skills and resources
+var tradingPerformance = function(group) {
+    return analyticalSkills(group) + resources(group);
+};
 
-;; Trading performance is a combination of analytical skills and resources.
-(define (trading-performance group) (+ (analytical-skills group) (resources group)))
+// Determines the likely winner in a trading competition
+var likelyToWinTrading = function(group1, group2) {
+    return tradingPerformance(group1) > tradingPerformance(group2);
+};
 
-;; Determines the likely winner in a trading competition.
-(define (likely-to-win-trading group-1 group-2) (> (trading-performance group-1) (trading-performance group-2)))
-
-;; Now, let us translate some user-defined statements.
-;; Each statement begins with either `Condition` or `Query`.
-;; `Condition` statements provide facts about the scenario.
-;; `Query` statements are questions that evaluate quantities of interest.
+// Example scenarios from the user-defined statements
+var scenarios = [
+    {group1: 'mitStudents', group2: 'financialInstitution'},
+    {group1: 'wallStreetInstitution', group2: 'mitAiClub'},
+    {group1: 'mitStudentsMl', group2: 'establishedFirmOldModels'},
+    {group1: 'wallStreet15th', group2: 'mitTradingClub'},
+    {group1: 'uchicagoDoctoralCohort', group2: 'majorBankQuantDepartment'}
+];

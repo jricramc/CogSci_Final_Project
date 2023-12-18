@@ -1,0 +1,6 @@
+scenario,player1,player2,probability_player1,probability_player2
+1. Very Talented Novice vs Mediocre Experienced,Very Talented Novice,Mediocre Experienced,0.961,0.039000000000000035
+2. Professional vs Very Talented Novice,Professional,Very Talented Novice,0.131,0.869
+3. Determined Novice vs Lazy Intermediate,Determined Novice,Lazy Intermediate,0.997,0.0030000000000000027
+4. Determined Intermediate vs Lazy Novice,Determined Intermediate,Lazy Novice,0.975,0.025000000000000022
+5. Determined Intermediate vs Determined Novice,Determined Intermediate,Determined Novice,0.9637,0.0363

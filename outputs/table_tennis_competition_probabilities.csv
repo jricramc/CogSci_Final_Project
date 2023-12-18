@@ -1,0 +1,6 @@
+scenario,player1,player2,probability_player1,probability_player2
+1. Olympic Gold Medalist vs Inexperienced Amateur,Olympic Gold Medalist,Inexperienced Amateur,0.98,0.020000000000000018
+2. Olympic Gold Medalist Off Day vs Local Semi-Pro Champion,Olympic Gold Medalist Off Day,Local Semi-Pro Champion,0.62,0.38
+3. Gifted Beginner vs Mediocre Professional,Gifted Beginner,Mediocre Professional,0.99,0.010000000000000009
+4. Consistent Semi-Pro vs Talented Newcomer,Consistent Semi-Pro,Talented Newcomer,0.96,0.040000000000000036
+5. Local Amateur Champion vs Experienced Semi-Pro,Local Amateur Champion,Experienced Semi-Pro,0.6,0.4

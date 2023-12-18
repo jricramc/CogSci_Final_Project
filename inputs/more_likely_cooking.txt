@@ -1,27 +1,37 @@
-;; This Church program models a fairly judged cooking competition among various chefs.
+// Define the cooking skills based on the chef's background and condition
+var cookingSkills = function(chef, condition) {
+    switch(chef) {
+        case 'skillfulProfessional':
+            return gaussian(80, 10);
+        case 'mediocreSemiProfessional':
+            return gaussian(60, 15);
+        case 'localNoviceChampion':
+            return gaussian(55, 20);
+        case 'giftedInexperiencedAmateur':
+            return gaussian(50, 25);
+        case 'talentedNovice':
+            return gaussian(50, 20);
+        case 'inexperiencedAmateur':
+            return gaussian(40, 20);
+        // Adjusting skill level based on chef's condition (e.g., off day)
+        case 'offDay':
+            return gaussian(10, 5);
+        default:
+            return 0;
+    }
+};
 
-;; Define the cooking skills based on the chef's background and condition.
-(define (cooking-skills chef condition)
-  (cond 
-    ((equal? chef 'skillful-professional') (gaussian 80 10))
-    ((equal? chef 'mediocre-semi-professional') (gaussian 60 15))
-    ((equal? chef 'local-novice-champion') (gaussian 55 20))
-    ((equal? chef 'gifted-inexperienced-amateur') (gaussian 50 25))
-    ((equal? chef 'talented-novice') (gaussian 50 20))
-    ((equal? chef 'inexperienced-amateur') (gaussian 40 20))
-    ;; Adjusting skill level based on chef's condition (e.g., off day)
-    ((equal? condition 'off-day') (- (gaussian 10 5)))
-    (else 0)
-  )
-)
+// Determine the winner of the cooking competition
+var wonCookingMatch = function(chef1, chef2, chef1Condition, chef2Condition) {
+    return (cookingSkills(chef1, chef1Condition) > cookingSkills(chef2, chef2Condition));
+};
 
-;; Determine the winner of the cooking competition.
-(define (won-cooking-match chef-1 chef-2 chef-1-condition chef-2-condition)
-  (> (+ (cooking-skills chef-1 chef-1-condition))
-     (+ (cooking-skills chef-2 chef-2-condition)))
-)
-
-;; Now, let us translate some user-defined statements.
-;; Each statement begins with either `Condition` or `Query`.
-;; `Condition` statements provide facts about the scenario.
-;; `Query` statements are questions that evaluate quantities of interest.
+// Example scenarios from the user-defined statements
+// These could be used in simulations or queries within WebPPL
+var scenarios = [
+    {chef1: 'skillfulProfessional', chef2: 'inexperiencedAmateur', chef1Condition: 'normal', chef2Condition: 'normal'},
+    {chef1: 'skillfulProfessional', chef2: 'localAmateurWinner', chef1Condition: 'offDay', chef2Condition: 'normal'},
+    {chef1: 'mediocreSemiProfessional', chef2: 'giftedInexperiencedAmateur', chef1Condition: 'normal', chef2Condition: 'normal'},
+    {chef1: 'mediocreSemiProfessional', chef2: 'talentedNovice', chef1Condition: 'normal', chef2Condition: 'normal'},
+    {chef1: 'localNoviceChampion', chef2: 'skilledSemiProfessional', chef1Condition: 'normal', chef2Condition: 'normal'}
+];
